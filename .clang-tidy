@@ -1,0 +1,17 @@
+---
+# https://clang.llvm.org/extra/clang-tidy/checks/list.html
+Checks: '
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  clang-analyzer-*,
+  misc-*,
+  -misc-non-private-member-variables-in-classes,
+  performance-*,
+  -performance-enum-size,
+  portability-*,
+  -readability-*,
+  -modernize-*,
+'
+
+# Check header files inside our source/include directory only
+HeaderFilterRegex: 'include/.*|src/.*'

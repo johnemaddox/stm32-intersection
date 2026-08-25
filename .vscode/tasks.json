@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Host Tests",
+            "type": "shell",
+            "command": "./build host",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "focus": true
+            }
+        },
+        {
+            "label": "Build Target Debug",
+            "type": "shell",
+            "command": "./build debug",
+            "presentation": {
+                "focus": true
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+        {
+            "label": "Flash Debug",
+            "type": "shell",
+            "command": "./build flash debug",
+            "presentation": {
+                "focus": true
+            }
+        },
+        {
+            "label": "Flash Release",
+            "type": "shell",
+            "command": "./build flash release",
+            "presentation": {
+                "focus": true
+            }
+        }
+    ]
+}

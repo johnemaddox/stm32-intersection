@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Host Debug",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/host/bin/tests",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build Host Tests"
+        },
+        {
+            "name": "Target Debug",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/out/target/bin/${workspaceFolderBasename}.elf",
+            "device": "STM32G071RB",
+            "configFiles": [
+                "openocd.cfg"
+            ],
+            "preLaunchTask": "Flash Debug",
+            "runToEntryPoint": "main",
+            "gdbPath": "gdb-multiarch"
+        }
+    ]
+}

@@ -1,0 +1,119 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# use project base directory as PROJECT_NAME. Binaries will be output under this name.
+project_name="${PWD##*/}"
+build_dir="${PWD}/out"
+
+usage()
+{
+    echo "
+    Commands: 
+        drivers      - Downloads drivers into ./drivers.
+        host         - Compile host gTest without running.
+        test         - Compile & run host gTest.
+        debug        - Cross-compile debug FW.
+        flash [type] - Cross-compile & flash [debug|release] FW to target.
+        clean        - Deletes buiild directory.
+    "
+}
+
+if [ -z "${1+x}" ]; then
+    usage
+    exit 1
+fi
+
+clean()
+{
+    rm -rf $build_dir
+}
+
+# host for unit tests, local debugging
+make_host()
+{
+    echo ">> Building Host tests <<"
+    host_dir="${build_dir}/host"
+    cmake -G Ninja -S . -B "${host_dir}" \
+          -DCMAKE_BUILD_TYPE=Debug
+    cmake --build "${host_dir}"
+    merge_compile_commands
+}
+
+make_target()
+{
+    build_type="Debug"
+    if [ "${1:-}" == "release" ]; then
+        build_type="Release"
+    fi
+
+    echo ">> Building $build_type firmware <<"
+
+    target_dir="${build_dir}/target"
+    cmake -G Ninja -S . -B "${target_dir}" \
+          -DCMAKE_TOOLCHAIN_FILE=toolchains/stm32g071.cmake \
+          -DCMAKE_BUILD_TYPE="${build_type}"
+    cmake --build "${target_dir}"
+    merge_compile_commands
+}
+
+run_test()
+{
+    make_host
+    echo ">> Running Host tests <<"
+    ${build_dir}/host/bin/tests
+}
+
+flash_target()
+{
+    echo ">> Flashing firmware on target <<"
+    openocd -f openocd.cfg -c "program ${build_dir}/target/bin/${project_name}.elf verify reset exit"
+}
+
+merge_compile_commands()
+{
+    echo ">> Sync host & target compile commands <<"
+    python3 -c "
+import json, os
+merged = []
+for path in ['out/host/compile_commands.json', 'out/target/compile_commands.json']:
+    if os.path.exists(path):
+        try:
+            with open(path, 'r') as f:
+                merged.extend(json.load(f))
+        except Exception as e:
+            print(f'Warning: Could not read {path}: {e}')
+if merged:
+    with open('out/compile_commands.json', 'w') as f:
+        json.dump(merged, f, indent=2)
+"
+}
+
+case "$1" in
+    "drivers")
+        echo ">> Downloading Drivers <<"
+        ./drivers/download_drivers.sh
+        ;;
+    "host")
+        make_host
+        ;;
+    "test")
+        run_test
+        ;;
+    "debug")
+        make_target debug
+        ;;
+    "flash")
+        if [ -z "${2+x}" ]; then
+            usage
+            exit 1
+        fi
+        make_target "$2"
+        flash_target
+        ;;
+    "clean")
+        clean
+        ;;
+    *)
+        usage
+        ;;
+esac

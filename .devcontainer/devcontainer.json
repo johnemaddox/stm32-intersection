@@ -1,0 +1,23 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/alpine
+{
+	"name": "stm32_blinky",
+	"dockerFile": "Dockerfile",
+	"runArgs": [
+		"--privileged",
+		"-v", "/dev/bus/usb:/dev/bus/usb"
+	],
+	"mounts": [
+		"source=${localEnv:HOME}/.bash_history,target=/home/vscode/.bash_history,type=bind",
+		"source=${localEnv:HOME}/.bash_aliases,target=/home/vscode/.bash_aliases,type=bind"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"llvm-vs-code-extensions.vscode-clangd",
+				"marus25.cortex-debug",
+				"vadimcn.vscode-lldb"
+			]
+		}
+	}
+}

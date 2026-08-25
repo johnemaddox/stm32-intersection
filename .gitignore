@@ -1,0 +1,4 @@
+out/
+drivers/*
+!drivers/download_drivers.sh
+.vscode/settings.json   # to prevent auto-generated changes
