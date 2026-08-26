@@ -53,8 +53,8 @@ static const sm_state_config_t state_table[NUM_SIG_STATES] = {
 };
 
 static sm_handle_t sm;
-static uint32_t last_tick = 0;
-static uint32_t state_duration = 0;
+static volatile uint32_t last_tick = 0;
+static volatile uint32_t state_duration = 0;
 
 static void set_state_timer(uint32_t duration_ms) {
     last_tick = HAL_GetTick();
