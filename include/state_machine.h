@@ -22,10 +22,10 @@
  *
  * @author John E Maddox
  *
- * @version 2.0.0
+ * @version 2.1.0
  *
- *************************************************************H*/
- 
+ * *************************************************************H*/
+
 #ifndef STATE_MACHINE_H
 #define STATE_MACHINE_H
 
@@ -53,6 +53,19 @@ struct sm_handle_t
     void *context;
 };
 
-sm_state_t sm_run(sm_handle_t *self);
+// State machine status definitions
+typedef enum {
+    SM_OK,
+    SM_ERR_NULLPTR,
+    SM_ERR_INVALID_STATE
+} sm_status_t;
+
+// Result object encapsulating state machine status and current state
+typedef struct {
+    sm_status_t status;
+    sm_state_t state;
+} sm_result_t;
+
+sm_result_t sm_run(sm_handle_t *self);
 
 #endif // STATE_MACHINE_H

@@ -1,10 +1,20 @@
 #include "state_machine.h"
 
-sm_state_t sm_run(sm_handle_t *self)
+sm_result_t sm_run(sm_handle_t *self)
 {
-    if (self == NULL || self->state_table == NULL || self->cur_state >= self->num_states)
+    sm_result_t result;
+    if (self == NULL || self->state_table == NULL)
     {
-        return 0;
+        result.status = SM_ERR_NULLPTR;
+        result.state = 0;
+        return result;
+    }
+
+    if (self->cur_state >= self->num_states)
+    {
+        result.status = SM_ERR_INVALID_STATE;
+        result.state = 0;
+        return result;
     }
 
     const sm_state_config_t *state = &self->state_table[self->cur_state];
@@ -16,5 +26,8 @@ sm_state_t sm_run(sm_handle_t *self)
     }
 
     self->cur_state = state->next_state;
-    return rtn;
+    
+    result.status = SM_OK;
+    result.state = rtn;
+    return result;
 }

@@ -19,6 +19,7 @@ endif()
 
 add_executable(tests
     intersection-test.cpp
+    state_machine-test.cpp
     HAL_stubs.c
 )
 

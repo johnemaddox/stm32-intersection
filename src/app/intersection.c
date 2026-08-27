@@ -71,8 +71,13 @@ void intersection_init(void) {
     sm.num_states = NUM_SIG_STATES;
     sm.context = NULL;
 
-    sm_state_t executed = sm_run(&sm);
-    set_state_timer(state_durations[executed]);
+    sm_result_t result = sm_run(&sm);
+    if (result.status == SM_OK) {
+        set_state_timer(state_durations[result.state]);
+    } else {
+        leds_write(PATTERN_NSrEWr);
+        set_state_timer(DURATION_NSrEWr);
+    }
 }
 
 void intersection_step(void) {
@@ -80,8 +85,13 @@ void intersection_step(void) {
 #ifndef NATIVE
         __disable_irq();
 #endif
-        sm_state_t executed = sm_run(&sm);
-        set_state_timer(state_durations[executed]);
+        sm_result_t result = sm_run(&sm);
+        if (result.status == SM_OK) {
+            set_state_timer(state_durations[result.state]);
+        } else {
+            leds_write(PATTERN_NSrEWr);
+            set_state_timer(DURATION_NSrEWr);
+        }
 #ifndef NATIVE
         __enable_irq();
 #endif
