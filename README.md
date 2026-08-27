@@ -1,6 +1,6 @@
-# Traffic Intersection
+# Traffic Light Intersection
 
-I had an embedded systems interview where I was asked to build a traffic light interesection model with only red and green stops (yellow was not required to save time). This is a working model of that project using a **ST NUCLEO-G071RB** board and an 8-bit shift register. The interesection is managed with a state machine.
+I had an embedded systems interview where I was asked to build a traffic light intersection model with only red and green stops (yellow was not required to save time). This is a working model of that project using a **ST NUCLEO-G071RB** board and an 8-bit shift register. The intersection is managed with a state machine.
 
 
 ## Project Overview
@@ -9,7 +9,7 @@ I had an embedded systems interview where I was asked to build a traffic light i
 * B1 (blue button on Nucleo) triggers an interrupt to put all traffic stop points to red.
 
 
-### Techincal 
+### Technical 
 
 * **ST NUCLEO-G071RB** board (STM32G071xx MCU).
 * **TI SN74HC595N** 8-bit shift register to control 8 LEDs.
@@ -24,6 +24,7 @@ I had an embedded systems interview where I was asked to build a traffic light i
 * Ninja
 * OpenOCD (On-Chip Debugger)
 * Clangd & Clang-Tidy (Static analysis & autocomplete)
+* GDB
 * LLDB Debugger
 * GoogleTest framework
 
