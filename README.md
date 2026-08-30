@@ -2,6 +2,8 @@
 
 I had an embedded systems interview where I was asked to build a traffic light intersection model with only red and green stops (yellow was not required to save time). This is a working model of that project using a **ST NUCLEO-G071RB** board and an 8-bit shift register. The intersection is managed with a state machine.
 
+[Here](https://youtu.be/u8A8jcmiZcI?si=X9Z_7ddQwY-O_1Kv) is a short video of this project running.
+
 
 ## Project Overview
 * Simulates a 4 stop intersection using a pair of LEDs (green, red) for each stop.
@@ -15,7 +17,7 @@ I had an embedded systems interview where I was asked to build a traffic light i
 * **TI SN74HC595N** 8-bit shift register to control 8 LEDs.
 * Runs **GoogleTest** and step debugging on the host machine.
 * Cross-compile target firmware with **arm-none-eabi-gcc**.
-* Run step debugging on the target machine.
+* Runs step debugging on the target machine.
 * [Schematic Diagram](./Schematics.md)
 
 ## Included in Container
@@ -44,7 +46,7 @@ I had an embedded systems interview where I was asked to build a traffic light i
 
 ## Terminal Commands
 
-* **`./build drivers`**       : Download STM HAL and CMSIS library files to ./drivers.
+* **`./build drivers`**       : Downloads STM HAL and CMSIS library files to ./drivers.
 * **`./build test`**          : Compiles and runs the host unit tests using host compiler.
 * **`./build debug`**         : Cross-compile debug FW, this is for checking ctidy.
 * **`./build flash-debug`**   : Cross-compile & flash debug FW for target.
